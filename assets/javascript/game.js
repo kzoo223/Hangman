@@ -1,30 +1,67 @@
 //Variables & arrays
 	var words = ["terra", "locke", "sabin", "edgar", "shadow", "cyan"]
-	var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 	var lives = 5;
+	
 
 //select random answer
-	var word = words[Math.floor(Math.random() * words.length)];
+	function choose () {
+    return words[Math.floor(Math.random() * words.length)];
+}
 
 //masking answer
-	var hidden = [];	
+	function blanks ( answer ) {  
+    var blank = ""; 
+    for ( i in answer ) {
+        blank = "_" + blank;
+    }
+    return blank;
+}
 
 //functions
 
-document.onkeyup = function (event){
-	//letter input
-	var key = String.fromCharCode(event.keyCode).toLowerCase();
-	for (var i = 0; i<word.length; i++){
-		if(key == word[i]){
-			hidden[i] = key+"";
-		
-		}
-		else if (key != word[i]){
-			lives - 1
-		}
-
-	}
+//reset
+function resetLetters () {
+    $(".guessed").remove();
+    $(".shown").remove();
 }
+function reset () {
+    resetLetters();
+    answer = choose();
+    blank = blanks(answer);
+}
+
+//button resets game
+$("#resetButton").on("click", reset(){
+}
+
+$(document).ready(reset);
+function win(){alert("Congrats!"); reset();}
+function lose(){alert("Sorry you lost!") reset();}
+//sets values to 0/blank
+function doKeypress(){
+		var char = $("input").val().toLowerCase();
+		var string = "";
+		$("#input").val("");
+
+		string =guess( char, blank, answer );
+		if (string != blank){
+			update(string);
+			blank = answer;
+			if (blank === answer){
+				win();
+			}
+		}
+		else {
+			wrongLetter(char);
+			lives -1
+			if (lives = 0){
+				lose();
+			}
+		}
+}
+//assigns input on keypress
+$('#input').keyup( doKeypress );
+
 
 
 
